@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>CloudRescue — Disaster response for Kerala</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@600;800&family=Public+Sans:wght@400;500;700&display=swap">
+<style>
+:root{--bg:#eef3f2;--surface:#fff;--ink:#0b2a33;--muted:#57707a;--line:#d5e0e0;--water:#0e6e8c;--deep:#0b2a33;--red:#d63a2f;--amber:#e39a14;--green:#1f8a4c;--onDeep:#e6f2f2;
+--h:'Bricolage Grotesque','Segoe UI',system-ui,sans-serif;--b:'Public Sans','Segoe UI',system-ui,sans-serif;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#081c22;--surface:#0f2a33;--ink:#e6f2f2;--muted:#8fa9b2;--line:#1d3d48;--water:#4cc3e6;--deep:#04141a;--red:#ff6a5c;--amber:#f2b134;--green:#4cc77f}}
+:root[data-theme="dark"]{--bg:#081c22;--surface:#0f2a33;--ink:#e6f2f2;--muted:#8fa9b2;--line:#1d3d48;--water:#4cc3e6;--deep:#04141a;--red:#ff6a5c;--amber:#f2b134;--green:#4cc77f}
+*{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 16px/1.6 var(--b)}
+a{color:inherit}h1,h2,h3{font-family:var(--h);line-height:1.08;margin:0}
+.wrap{max-width:1120px;margin:0 auto;padding:0 22px}
+:focus-visible{outline:3px solid var(--water);outline-offset:2px}
+nav{display:flex;justify-content:space-between;align-items:center;padding:18px 0}
+.logo{font:800 22px var(--h);text-decoration:none}.logo b{color:var(--water)}
+nav ul{display:flex;gap:26px;list-style:none;margin:0;padding:0;font-weight:500;font-size:15px}nav a{text-decoration:none;color:var(--muted)}nav a:hover{color:var(--ink)}
+.btn{display:inline-block;background:var(--red);color:#fff;border:0;border-radius:8px;padding:13px 20px;font:700 15px var(--b);text-decoration:none;cursor:pointer}
+.btn.ghost{background:transparent;color:var(--ink);border:1.5px solid var(--ink)}
+/* hero */
+.hero{display:grid;grid-template-columns:1.05fr .95fr;gap:48px;align-items:center;padding:44px 0 72px}
+.hero h1{font-size:clamp(38px,5.6vw,66px);font-weight:800;letter-spacing:-.025em}
+.hero p{font-size:19px;color:var(--muted);max-width:30em;margin:20px 0 28px}
+.cta{display:flex;gap:12px;flex-wrap:wrap}
+.triage{background:var(--deep);color:var(--onDeep);border-radius:18px;padding:24px}
+.triage h2{font-size:20px;margin-bottom:4px}.triage .s{color:#8fb0b8;font-size:14px;margin-bottom:16px}
+.triage label{display:block;font-size:13px;font-weight:700;margin:12px 0 5px}
+.triage select,.triage input[type=text]{width:100%;padding:11px;border-radius:8px;border:1px solid #2a505c;background:#0f3340;color:#fff;font:inherit}
+.triage input[type=range]{width:100%;accent-color:#4cc3e6}
+.score{margin-top:18px;border-radius:12px;padding:16px;background:#0f3340;border-left:6px solid var(--g,#4cc77f);transition:border-color .3s}
+.score .n{font:800 44px var(--h);line-height:1}.score .n small{font-size:18px;color:#8fb0b8}
+.score .l{font-weight:700;margin-top:4px;color:var(--g,#4cc77f)}.score p{font-size:14px;color:#b8d0d6;margin:8px 0 0;font-size:14px}
+.sent{margin-top:12px;font-size:14px;color:#8fb0b8;min-height:22px}
+/* sections */
+section{padding:64px 0}h2.t{font-size:clamp(28px,3.6vw,42px);font-weight:800;letter-spacing:-.02em;max-width:18em}
+.lead{color:var(--muted);max-width:36em;margin:14px 0 36px;font-size:18px}
+.roles{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border-top:2px solid var(--ink)}
+.roles div{padding:22px 24px 8px 0}.roles h3{font-size:22px;margin-bottom:8px}.roles p{color:var(--muted);margin:0 0 12px;font-size:15px}
+.roles div+div{padding-left:24px;border-left:1px solid var(--line)}
+/* flow */
+.flow{background:var(--deep);color:var(--onDeep)}.flow .lead{color:#8fb0b8}
+.steps{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(5,1fr);gap:0;counter-reset:s}
+.steps li{padding:18px 16px 0 0;border-top:3px solid #2a505c;position:relative;counter-increment:s}
+.steps li:before{content:counter(s);position:absolute;top:-14px;left:0;width:25px;height:25px;border-radius:50%;background:#4cc3e6;color:#04141a;font:700 13px/25px var(--b);text-align:center}
+.steps li{padding-top:22px}.steps b{display:block;font-family:var(--h);font-size:18px}.steps span{font-size:14px;color:#9dbcc4}
+/* console */
+.console{background:var(--surface);border:1px solid var(--line);border-radius:16px;overflow:hidden}
+.cbar{display:flex;gap:26px;flex-wrap:wrap;padding:16px 22px;border-bottom:1px solid var(--line)}
+.cbar div{font-size:13px;color:var(--muted)}.cbar strong{display:block;font:800 28px var(--h);color:var(--ink)}
+.cbody{display:grid;grid-template-columns:1.2fr 1fr}
+.map{position:relative;min-height:300px;background-color:#d6e8ec;background-image:linear-gradient(30deg,transparent 48%,#a9c6cf 49%,#a9c6cf 51%,transparent 52%),linear-gradient(120deg,transparent 48%,#a9c6cf 49%,#a9c6cf 51%,transparent 52%);background-size:120px 100px,150px 130px}
+.map em{position:absolute;left:14px;top:12px;font:700 12px var(--b);background:#fff;color:#0b2a33;padding:6px 9px;border-radius:6px;font-style:normal}
+.mk{position:absolute;width:20px;height:20px;border-radius:50%;border:3px solid #fff;box-shadow:0 2px 6px #0007;cursor:pointer;padding:0}
+.mk.r{background:#d63a2f}.mk.o{background:#e39a14}.mk.g{background:#1f8a4c}.mk.b{background:#0e6e8c}
+.mk .tip{display:none;position:absolute;left:24px;top:-4px;white-space:nowrap;background:#0b2a33;color:#fff;font:500 12px var(--b);padding:5px 8px;border-radius:6px}
+.mk:hover .tip,.mk:focus .tip{display:block}
+.inc{padding:8px 22px 18px}.inc table{width:100%;border-collapse:collapse;font-size:14px}
+.inc th{text-align:left;color:var(--muted);font-size:12px;padding:10px 6px;font-weight:500}.inc td{padding:11px 6px;border-top:1px solid var(--line)}
+.bd{padding:3px 9px;border-radius:99px;font-weight:700;font-size:12px}.c{background:#fde3e0;color:#9d231a}.m{background:#fdefcc;color:#8a5a00}.lo{background:#d9f2e3;color:#14653a}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .c{background:#4a1d1a;color:#ffb1a8}:root:not([data-theme="light"]) .m{background:#4a3708;color:#ffd77a}:root:not([data-theme="light"]) .lo{background:#123a24;color:#8fe3b2}}
+.shelters{display:grid;grid-template-columns:repeat(3,1fr);gap:28px;margin-top:8px}
+.sh h3{font-size:19px}.sh .p{color:var(--muted);font-size:14px;margin:2px 0 10px}
+.bar{height:10px;background:var(--line);border-radius:9px;overflow:hidden}.bar i{display:block;height:100%;background:var(--water)}.bar i.hot{background:var(--red)}
+.sh .k{display:flex;justify-content:space-between;font-size:14px;margin-top:8px;font-weight:700}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;border-top:2px solid var(--ink);padding-top:22px}
+.stats strong{display:block;font:800 40px var(--h)}.stats span{color:var(--muted);font-size:14px}
+footer{padding:44px 0 56px;border-top:1px solid var(--line);color:var(--muted);font-size:14px}
+footer .wrap{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+
+:root{--sea:#c9e2ec;--land:#e6eddd;--road:#b7c2b0;--river:#8fc3d6}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--sea:#0a2a36;--land:#14363a;--road:#2b5057;--river:#1f5f78}}
+:root[data-theme="dark"]{--sea:#0a2a36;--land:#14363a;--road:#2b5057;--river:#1f5f78}
+.pick{display:grid;grid-template-columns:1.5fr .8fr;gap:28px;align-items:start}
+.pmap{display:block;width:100%;height:auto;border-radius:14px;border:1px solid var(--line);touch-action:none;cursor:crosshair;background:var(--sea)}
+.pmap text{font:600 12px var(--b);fill:var(--muted);paint-order:stroke;stroke:var(--land);stroke-width:3px;pointer-events:none}
+.pside h3{font-size:22px;margin-bottom:10px}.pside dl{margin:0 0 18px}.pside dt{font-size:13px;color:var(--muted);margin-top:12px}.pside dd{margin:2px 0 0;font-weight:700}
+.pside .btn{margin:0 8px 8px 0}.hint{font-size:14px;color:var(--muted);margin:10px 0 0}
+.mapl{font-size:13px;display:inline-block;margin-top:6px;font-weight:700;color:var(--water)}
+@media(max-width:900px){.pick{grid-template-columns:1fr}}
+
+.drop{border:1.5px dashed #2a7a8c;border-radius:10px;padding:12px;text-align:center;font-size:14px;color:#b8d0d6;transition:background .2s}
+.drop.over{background:#14485a;border-color:#4cc3e6}
+.drop .btn{padding:8px 13px;font-size:14px;background:#0e6e8c;margin:4px 4px 6px 0}
+.drop small{display:block;color:#8fb0b8;font-size:12px}
+#flist{list-style:none;margin:10px 0 0;padding:0;display:grid;gap:8px}
+#flist li{display:flex;align-items:center;gap:10px;background:#0f3340;border-radius:8px;padding:6px 8px;font-size:13px}
+#flist .th{width:44px;height:44px;border-radius:6px;background:#1d4f5e;flex:none;object-fit:cover;display:grid;place-items:center;font-size:20px}
+#flist .nm{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}#flist .nm small{display:block;color:#8fb0b8}
+#flist button{background:transparent;border:0;color:#ffb1a8;font:700 13px var(--b);cursor:pointer;padding:6px}
+#fm{font-size:13px;color:#ffd77a;min-height:18px;margin-top:6px}
+
+.sos{position:fixed;right:18px;bottom:calc(18px + env(safe-area-inset-bottom,0px));z-index:30;background:var(--red);color:#fff;border:0;border-radius:99px;padding:15px 22px;font:800 16px var(--h);box-shadow:0 8px 24px #0006;cursor:pointer;display:flex;gap:8px;align-items:center}
+.sos:hover{filter:brightness(1.08)}
+dialog.call{border:0;border-radius:18px;padding:0;max-width:460px;width:calc(100% - 32px);background:var(--surface);color:var(--ink);box-shadow:0 20px 60px #0008}
+dialog.call::backdrop{background:#04141acc}
+.call .in{padding:24px}.call h2{font-size:26px}.call p{color:var(--muted);margin:8px 0 16px;font-size:15px}
+.big{display:block;text-align:center;background:var(--red);color:#fff;text-decoration:none;border-radius:12px;padding:16px;font:800 22px var(--h)}
+.big small{display:block;font:500 13px var(--b);opacity:.9}
+.nums{list-style:none;margin:14px 0;padding:0;display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.nums a{display:block;border:1.5px solid var(--line);border-radius:10px;padding:10px 12px;text-decoration:none;font-weight:700}
+.nums a:hover{border-color:var(--water)}.nums span{display:block;font-weight:400;font-size:13px;color:var(--muted)}
+.loc{background:var(--bg);border-radius:10px;padding:12px;font-size:14px}.loc b{display:block;margin-bottom:4px}
+.call .row{display:flex;gap:10px;margin-top:14px;flex-wrap:wrap}
+
+.lg{display:flex;flex-wrap:wrap;gap:8px 18px;font-size:13px;color:var(--muted);margin-top:10px}
+.lg i{display:inline-block;width:16px;height:6px;border-radius:3px;margin-right:6px;vertical-align:middle}
+.lg i.z{height:12px;opacity:.6;border:1.5px dashed}
+.lay{display:grid;gap:6px;margin:0 0 16px;font-size:15px}.lay label{display:flex;gap:8px;align-items:center;cursor:pointer}
+.lay input{accent-color:var(--water);width:18px;height:18px}
+.live{display:flex;align-items:center;gap:8px;font-size:14px;color:var(--muted);margin-bottom:12px}
+.live:before{content:"";width:10px;height:10px;border-radius:50%;background:var(--green);animation:pulse 1.6s infinite}
+@keyframes pulse{50%{opacity:.25}}
+.dz{animation:pulse 3s infinite}
+.det{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:14px;min-height:130px;font-size:15px}
+.det h4{font:800 18px var(--h);margin:0 0 6px}.det p{margin:6px 0 0;color:var(--muted);font-size:14px}
+.aff{list-style:none;margin:12px 0 0;padding:0;display:grid;gap:6px}
+.aff button{width:100%;text-align:left;background:transparent;border:1px solid var(--line);border-radius:8px;padding:8px 10px;color:var(--ink);font:500 14px var(--b);cursor:pointer}
+.aff button:hover{border-color:var(--water)}
+.lmap{touch-action:auto}.lmap [data-k]{cursor:pointer}.lmap [data-k]:focus-visible{outline:none}.lmap [data-k]:focus-visible *{stroke:var(--water)}
+@media (prefers-reduced-motion:reduce){.dz,.live:before{animation:none}}
+@media(max-width:900px){.hero,.cbody{grid-template-columns:1fr}.roles,.shelters{grid-template-columns:1fr}.roles div+div{padding-left:0;border-left:0}.steps{grid-template-columns:1fr;gap:26px}.stats{grid-template-columns:1fr 1fr}nav ul{display:none}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<nav><a class="logo" href="#">Cloud<b>Rescue</b></a>
+<ul><li><a href="#how">How it works</a></li><li><a href="#live">Live map</a></li><li><a href="#console">Command center</a></li><li><a href="#shelters">Shelters</a></li></ul>
+<button class="btn" type="button" data-sos>Emergency call</button></nav>
+
+<header class="hero">
+<div>
+<h1>When the water rises, every report reaches a rescue team in seconds.</h1>
+<p>CloudRescue turns citizen emergency reports into ranked, mapped, assignable incidents for Kerala's disaster managers. Try the triage on the right.</p>
+<div class="cta"><a class="btn" href="#triage">Report an emergency</a><a class="btn ghost" href="#console">Open the command center</a></div>
+</div>
+<div class="triage" id="triage">
+<h2>Report an emergency</h2><div class="s">Your report is scored and queued instantly.</div>
+<label for="type">Incident type</label>
+<select id="type"><option>Flood</option><option>Landslide</option><option>Fire</option><option>Road Block</option><option>Medical Emergency</option><option>People Trapped</option></select>
+<label for="loc">Location</label><input type="text" id="loc" value="Near Aluva, Kerala"><a class="mapl" href="#pin" style="color:#4cc3e6">Choose on the map</a>
+<label for="ppl">People affected: <output id="pv">3</output></label>
+<input type="range" id="ppl" min="1" max="20" value="3">
+<label>Photos or video</label>
+<div class="drop" id="drop">
+<input type="file" id="files" accept="image/*,video/*" multiple hidden>
+<input type="file" id="cam" accept="image/*,video/*" capture="environment" hidden>
+<button type="button" class="btn" id="pickf">Choose files</button><button type="button" class="btn" id="pickc">Use camera</button>
+<small>or drop files here. Up to 5 files. Photos 10 MB, videos 50 MB each.</small>
+</div>
+<ul id="flist"></ul><div id="fm" aria-live="polite"></div>
+<div class="score" id="score" aria-live="polite"></div>
+<button class="btn" style="margin-top:14px;width:100%" id="send">Submit emergency report</button>
+<div class="sent" id="sent" aria-live="polite"></div>
+</div>
+</header>
+</div>
+
+<section id="pin"><div class="wrap">
+<h2 class="t">Show us exactly where you are.</h2>
+<p class="lead">Tap the map or drag the pin to your location. Your report uses it, and we show the nearest shelter.</p>
+<div class="pick">
+<div><svg id="pm" class="pmap" viewBox="0 0 720 540" tabindex="0" role="application" aria-label="Location map of the Kochi region. Use arrow keys to move the pin."></svg>
+<p class="hint">Schematic map of the Kochi region. Arrow keys move the pin; hold Shift to move faster.</p></div>
+<div class="pside"><h3>Your pinned location</h3>
+<dl><dt>Nearest area</dt><dd id="pa">-</dd><dt>Coordinates</dt><dd id="pc">-</dd><dt>Nearest shelter</dt><dd id="ps">-</dd></dl>
+<button class="btn" id="geo" type="button">Use my current location</button><a class="btn ghost" href="#triage">Continue to report</a>
+<p class="hint" id="gm" aria-live="polite"></p></div>
+</div></div></section>
+
+<section><div class="wrap">
+<h2 class="t">One system for citizens, responders and managers.</h2>
+<p class="lead">Each group sees what it needs, from the same live data.</p>
+<div class="roles">
+<div><h3>Citizens</h3><p>Report a flood, landslide, fire or blocked road with a photo or video. Find the nearest shelter with space, food, water and medical help, then navigate to it.</p></div>
+<div><h3>Rescue teams</h3><p>See which teams are free, what they carry (boat, ambulance, medical kit) and which incident they are on. Dispatch the closest match in one click.</p></div>
+<div><h3>Disaster managers</h3><p>Watch every incident on a live map, broadcast alerts to nearby users, track water, food and medical stock, and follow missing and rescued people.</p></div>
+</div></div></section>
+
+<section class="flow" id="how"><div class="wrap">
+<h2 class="t">From report to dispatch, all in the cloud.</h2>
+<p class="lead">Every report follows the same path, so nothing waits in a queue by accident.</p>
+<ol class="steps">
+<li><b>API gateway</b><span>Receives the report from the app or website.</span></li>
+<li><b>Serverless function</b><span>Classifies the incident and scores its priority from 0 to 100.</span></li>
+<li><b>Cloud database</b><span>Stores the incident, photos and location.</span></li>
+<li><b>Notification service</b><span>Alerts the right team and nearby residents.</span></li>
+<li><b>Auto-scaling</b><span>Adds capacity automatically when reports surge.</span></li>
+</ol></div></section>
+
+<section id="console"><div class="wrap">
+<h2 class="t">The command center, live.</h2>
+<p class="lead">Hover a marker on the map. Reports you submit above appear in the table.</p>
+<div class="console">
+<div class="cbar"><div><strong id="ic">127</strong>Active incidents</div><div><strong style="color:var(--red)">23</strong>Critical</div><div><strong>4,821</strong>People affected</div><div><strong>18</strong>Shelters</div><div><strong>31</strong>Rescue teams</div></div>
+<div class="cbody">
+<div class="map"><em>Kochi live map</em>
+<button class="mk r" style="left:26%;top:30%" aria-label="Critical flood"><span class="tip">Critical flood, Aluva</span></button>
+<button class="mk r" style="left:58%;top:43%" aria-label="People trapped"><span class="tip">People trapped</span></button>
+<button class="mk o" style="left:70%;top:24%" aria-label="Road blocked"><span class="tip">Road blocked, Perumbavoor</span></button>
+<button class="mk g" style="left:44%;top:68%" aria-label="Safe shelter"><span class="tip">Safe shelter</span></button>
+<button class="mk b" style="left:78%;top:68%" aria-label="Rescue team"><span class="tip">Rescue team R-07</span></button>
+<button class="mk o" style="left:20%;top:72%" aria-label="Landslide"><span class="tip">Landslide</span></button>
+</div>
+<div class="inc"><table><thead><tr><th>ID</th><th>Type</th><th>Location</th><th>Priority</th></tr></thead>
+<tbody id="tb"><tr><td>#CR-1027</td><td>Flood</td><td>Aluva</td><td><span class="bd c">98</span></td></tr>
+<tr><td>#CR-1026</td><td>Landslide</td><td>Kothamangalam</td><td><span class="bd c">91</span></td></tr>
+<tr><td>#CR-1025</td><td>Road block</td><td>Perumbavoor</td><td><span class="bd m">62</span></td></tr></tbody></table></div>
+</div></div></div></section>
+
+<section id="live"><div class="wrap">
+<h2 class="t">See what is safe right now.</h2>
+<p class="lead">Affected roads, danger zones, safe zones and shelters, refreshed every few seconds. Select anything on the map for details.</p>
+<div class="pick">
+<div><svg id="lm" class="pmap lmap" style="cursor:default" viewBox="0 0 720 540" role="group" aria-label="Live situation map of the Kochi region"></svg>
+<div class="lg"><span><i style="background:var(--green)"></i>Road open</span><span><i style="background:var(--amber)"></i>Use caution</span><span><i style="background:var(--red)"></i>Road blocked</span><span><i class="z" style="background:var(--red);border-color:var(--red)"></i>Danger zone</span><span><i class="z" style="background:var(--green);border-color:var(--green)"></i>Safe zone</span><span><i style="background:#1f8a4c;width:10px;height:10px;border-radius:2px"></i>Shelter</span><span><i style="background:#2563eb;width:10px;height:10px;border-radius:50%"></i>You</span></div>
+<p class="hint">Demo data on a schematic map. Not for real navigation.</p></div>
+<div class="pside"><div class="live" aria-live="off">Live. Updated <b id="lt">now</b></div>
+<div class="lay"><label><input type="checkbox" data-l="roads" checked>Roads</label><label><input type="checkbox" data-l="danger" checked>Danger zones</label><label><input type="checkbox" data-l="safe" checked>Safe zones</label><label><input type="checkbox" data-l="shel" checked>Shelters</label></div>
+<div class="det" id="det" aria-live="polite"><h4>Nothing selected</h4><p>Select a road, zone or shelter on the map.</p></div>
+<ul class="aff" id="aff"></ul></div>
+</div></div></section>
+
+<section id="shelters"><div class="wrap">
+<h2 class="t">Know which shelters have room before you go.</h2>
+<p class="lead">Capacity and services update as people arrive.</p>
+<div class="shelters">
+<div class="sh"><h3>Government School</h3><div class="p">Aluva, 1.4 km</div><div class="bar"><i style="width:64%"></i></div><div class="k"><span>320 / 500</span><span>Food, water, medical</span></div></div>
+<div class="sh"><h3>Community Hall</h3><div class="p">Perumbavoor, 2.1 km</div><div class="bar"><i class="hot" style="width:92%"></i></div><div class="k"><span>460 / 500, nearly full</span><span>Food, water</span></div></div>
+<div class="sh"><h3>Relief Centre</h3><div class="p">Kalamassery, 4.8 km</div><div class="bar"><i style="width:26%"></i></div><div class="k"><span>180 / 700</span><span>Food, water, medical</span></div></div>
+</div></div></section>
+
+<section><div class="wrap"><div class="stats">
+<div><strong>12,580</strong><span>Food packets in stock</span></div>
+<div><strong>8,420 L</strong><span>Drinking water</span></div>
+<div><strong>99.98%</strong><span>API availability</span></div>
+<div><strong>12,842</strong><span>Active users</span></div>
+</div></div></section>
+
+<footer><div class="wrap"><span><b style="font-family:var(--h);font-size:18px;color:var(--ink)">CloudRescue</b><br>Disaster-response prototype for Kerala.</span><span>Demo data only. In a real emergency, call 112.</span></div></footer>
+
+<button class="sos" type="button" data-sos aria-haspopup="dialog">&#9742; Emergency call</button>
+<dialog class="call" id="calld" aria-labelledby="calltitle"><div class="in">
+<h2 id="calltitle">Call for help now</h2>
+<p>If someone is in danger, call first. Then submit a report so rescue teams can see where you are.</p>
+<a class="big" href="tel:112">Call 112<small>National emergency number</small></a>
+<ul class="nums">
+<li><a href="tel:108">108<span>Ambulance</span></a></li>
+<li><a href="tel:101">101<span>Fire and rescue</span></a></li>
+<li><a href="tel:100">100<span>Police</span></a></li>
+<li><a href="tel:1077">1077<span>District disaster control room</span></a></li>
+</ul>
+<div class="loc"><b>What to tell them</b><span id="calltxt"></span></div>
+<div class="row"><button class="btn" type="button" id="copyloc">Copy my location</button><button class="btn ghost" type="button" id="closecall">Close</button></div>
+<p id="copymsg" aria-live="polite" style="margin:10px 0 0;font-size:13px"></p>
+</div></dialog>
+
+<script>
+const $=id=>document.getElementById(id);
+function calc(){const t=$('type').value,p=+$('ppl').value;
+const s=Math.min(100,35+p*10+(t==='People Trapped'?25:0)+(t==='Flood'?12:0));
+const lv=s>=80?['Critical','#ff6a5c','c','Rescue team dispatch recommended now.']:s>=55?['Medium','#f2b134','m','Queued for the next available team.']:['Low','#4cc77f','lo','Logged and monitored.'];
+return{t,p,s,lv}}
+function paint(){const r=calc();$('pv').textContent=r.p;const el=$('score');el.style.setProperty('--g',r.lv[1]);
+el.innerHTML=`<div class="n">${r.s}<small>/100</small></div><div class="l">${r.lv[0]} priority</div><p>${r.lv[3]}</p>`}
+['type','ppl','loc'].forEach(i=>$(i).addEventListener('input',paint));paint();
+$('send').addEventListener('click',()=>{const r=calc(),loc=($('loc').value||'Unknown').split(',')[0].trim();
+const id=Math.floor(1000+Math.random()*8999);
+const row=document.createElement('tr');
+const cell=document.createElement('td');
+row.innerHTML=`<td>#CR-${id}</td><td></td><td></td><td><span class="bd ${r.lv[2]}">${r.s}</span></td>`;
+row.children[1].textContent=r.t;row.children[2].textContent=loc;
+$('tb').prepend(row);$('ic').textContent=+$('ic').textContent+1;
+$('sent').textContent=`Report #CR-${id} received. It is now in the command center below.${window.pinTxt?' Pinned at '+window.pinTxt+'.':''}`});
+</script>
+<script>
+(function(){
+const B={w:76.20,e:76.68,s:9.88,n:10.24},W=720,H=540,svg=$('pm'),NS='http://www.w3.org/2000/svg';
+const X=lo=>(lo-B.w)/(B.e-B.w)*W,Y=la=>(B.n-la)/(B.n-B.s)*H;
+const places=[['Aluva',10.108,76.352],['Perumbavoor',10.114,76.478],['Kalamassery',10.053,76.322],['Kothamangalam',10.060,76.636],['Kochi',9.931,76.267],['Angamaly',10.196,76.386],['Tripunithura',9.943,76.347],['Muvattupuzha',9.989,76.579]];
+const shelters=[['Government School, Aluva',10.100,76.360,'320 / 500'],['Community Hall, Perumbavoor',10.120,76.470,'460 / 500, nearly full'],['Relief Centre, Kalamassery',10.050,76.320,'180 / 700']];
+const pts=a=>a.map(([la,lo])=>X(lo).toFixed(1)+','+Y(la).toFixed(1)).join(' ');
+const land=[[10.24,76.235],[10.24,76.68],[9.88,76.68],[9.88,76.27],[9.93,76.23],[9.99,76.215],[10.08,76.225],[10.16,76.24]];
+const river=[[10.114,76.478],[10.108,76.352],[10.07,76.30],[10.02,76.25],[10.0,76.228]];
+const nh=[[10.196,76.386],[10.108,76.352],[10.053,76.322],[9.98,76.30],[9.931,76.267]];
+let h=`<rect width="${W}" height="${H}" fill="var(--sea)"/><polygon points="${pts(land)}" fill="var(--land)"/>`;
+for(let lo=76.3;lo<76.68;lo+=.1)h+=`<line x1="${X(lo)}" y1="0" x2="${X(lo)}" y2="${H}" stroke="var(--road)" stroke-width=".5" opacity=".5"/>`;
+for(let la=9.9;la<10.24;la+=.1)h+=`<line x1="0" y1="${Y(la)}" x2="${W}" y2="${Y(la)}" stroke="var(--road)" stroke-width=".5" opacity=".5"/>`;
+h+=`<polyline points="${pts(river)}" fill="none" stroke="var(--river)" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>`;
+h+=`<polyline points="${pts(nh)}" fill="none" stroke="var(--road)" stroke-width="3" stroke-dasharray="8 5"/>`;
+shelters.forEach(([n,la,lo])=>{h+=`<rect x="${X(lo)-7}" y="${Y(la)-7}" width="14" height="14" rx="3" fill="#1f8a4c" stroke="#fff" stroke-width="2"><title>${n}</title></rect>`});
+places.forEach(([n,la,lo])=>{h+=`<circle cx="${X(lo)}" cy="${Y(la)}" r="3" fill="var(--muted)"/><text x="${X(lo)+8}" y="${Y(la)-6}">${n}</text>`});
+h+=`<text x="40" y="${H/2}" style="font-style:italic;fill:var(--water)">Arabian Sea</text>`;
+h+=`<g id="pin2"><path d="M0 0C-14-18-16-30-16-36a16 16 0 1 1 32 0c0 6-2 18-16 36z" fill="#d63a2f" stroke="#fff" stroke-width="2.5"/><circle cy="-36" r="6" fill="#fff"/></g>`;
+svg.innerHTML=h;
+const pin=svg.querySelector('#pin2');let la=10.108,lo=76.352,drag=false;
+const rad=d=>d*Math.PI/180;
+const km=(a,b,c,d)=>{const t=Math.sin(rad(c-a)/2)**2+Math.cos(rad(a))*Math.cos(rad(c))*Math.sin(rad(d-b)/2)**2;return 12742*Math.asin(Math.sqrt(t))};
+const near=arr=>arr.map(p=>({p,d:km(la,lo,p[1],p[2])})).sort((a,b)=>a.d-b.d)[0];
+function set(a,o,ui){la=Math.min(B.n,Math.max(B.s,a));lo=Math.min(B.e,Math.max(B.w,o));
+pin.setAttribute('transform',`translate(${X(lo)} ${Y(la)})`);
+const a1=near(places),s1=near(shelters);
+$('pa').textContent=`${a1.p[0]} (${a1.d.toFixed(1)} km away)`;
+window.crPos=[la,lo];window.dispatchEvent(new Event('pinmove'));window.pinTxt=`${la.toFixed(4)}, ${lo.toFixed(4)}`;$('pc').textContent=window.pinTxt;
+$('ps').textContent=`${s1.p[0]}, ${s1.d.toFixed(1)} km. Occupancy ${s1.p[3]}`;
+if(ui!==false)$('loc').value=`Near ${a1.p[0]}, Kerala`}
+function fromEvent(e){const r=svg.getBoundingClientRect();
+set(B.n-(e.clientY-r.top)/r.height*(B.n-B.s),B.w+(e.clientX-r.left)/r.width*(B.e-B.w))}
+svg.addEventListener('pointerdown',e=>{drag=true;svg.setPointerCapture(e.pointerId);svg.focus({preventScroll:true});fromEvent(e)});
+svg.addEventListener('pointermove',e=>{if(drag)fromEvent(e)});
+svg.addEventListener('pointerup',()=>drag=false);svg.addEventListener('pointercancel',()=>drag=false);
+svg.addEventListener('keydown',e=>{const st=e.shiftKey?.02:.005,m={ArrowUp:[st,0],ArrowDown:[-st,0],ArrowLeft:[0,-st],ArrowRight:[0,st]}[e.key];
+if(m){e.preventDefault();set(la+m[0],lo+m[1])}});
+$('geo').addEventListener('click',()=>{const g=$('gm');
+if(!navigator.geolocation){g.textContent='Location is not available in this browser. Tap the map instead.';return}
+g.textContent='Finding your location...';
+navigator.geolocation.getCurrentPosition(p=>{const a=p.coords.latitude,o=p.coords.longitude;
+if(a<B.s||a>B.n||o<B.w||o>B.e){g.textContent='You are outside the Kochi demo area. Tap the map to choose a location.';return}
+set(a,o);g.textContent='Pinned to your current location. Drag the pin to adjust.'},
+()=>{g.textContent='Could not read your location. Allow location access or tap the map instead.'},{timeout:8000})});
+set(la,lo,false);
+})();
+</script>
+<script>
+(function(){
+const MAX=5,LIM={image:10,video:50};let att=[];
+const list=$('flist'),msg=$('fm'),drop=$('drop');
+const size=b=>b>=1048576?(b/1048576).toFixed(1)+' MB':Math.max(1,Math.round(b/1024))+' KB';
+function render(){list.innerHTML='';att.forEach(a=>{
+const li=document.createElement('li');let th;
+if(a.url){th=document.createElement('img');th.src=a.url;th.alt=''}else{th=document.createElement('span');th.textContent=a.kind==='video'?'\uD83C\uDFA5':'\uD83D\uDDBC'}
+th.className='th';
+const nm=document.createElement('span');nm.className='nm';nm.textContent=a.file.name;const sm=document.createElement('small');sm.textContent=a.kind+', '+size(a.file.size);nm.appendChild(sm);
+const rm=document.createElement('button');rm.type='button';rm.textContent='Remove';rm.setAttribute('aria-label','Remove '+a.file.name);
+rm.onclick=()=>{att=att.filter(x=>x!==a);msg.textContent='';render()};
+li.append(th,nm,rm);list.appendChild(li)})}
+function add(files){const out=[];msg.textContent='';
+[...files].forEach(f=>{const kind=f.type.startsWith('image/')?'image':f.type.startsWith('video/')?'video':null;
+if(!kind){out.push(f.name+' is not a photo or video.');return}
+if(f.size>LIM[kind]*1048576){out.push(f.name+' is over '+LIM[kind]+' MB.');return}
+if(att.length>=MAX){out.push('Only '+MAX+' files fit in one report.');return}
+const a={file:f,kind,url:null};att.push(a);
+if(kind==='image'){const r=new FileReader();r.onload=()=>{a.url=r.result;render()};r.readAsDataURL(f)}});
+msg.textContent=[...new Set(out)].join(' ');render()}
+$('pickf').onclick=()=>$('files').click();$('pickc').onclick=()=>$('cam').click();
+['files','cam'].forEach(i=>$(i).addEventListener('change',e=>{add(e.target.files);e.target.value=''}));
+['dragenter','dragover'].forEach(t=>drop.addEventListener(t,e=>{e.preventDefault();drop.classList.add('over')}));
+['dragleave','drop'].forEach(t=>drop.addEventListener(t,e=>{e.preventDefault();drop.classList.remove('over')}));
+drop.addEventListener('drop',e=>add(e.dataTransfer.files));
+$('send').addEventListener('click',()=>{const n=att.length;
+if(n){$('sent').textContent+=' '+n+(n>1?' files':' file')+' attached.';att=[];render()}});
+})();
+</script>
+<script>
+(function(){
+const d=$('calld');
+function info(){const loc=$('loc').value||'my location';const c=window.pinTxt;
+return c?`I need help near ${loc}. Coordinates ${c}. Map: https://maps.google.com/?q=${c.replace(/\s/g,'')}`:`I need help near ${loc}.`}
+document.querySelectorAll('[data-sos]').forEach(b=>b.addEventListener('click',()=>{$('calltxt').textContent=info();$('copymsg').textContent='';d.showModal()}));
+$('closecall').onclick=()=>d.close();
+d.addEventListener('click',e=>{if(e.target===d)d.close()});
+$('copyloc').onclick=async()=>{const m=$('copymsg');
+try{await navigator.clipboard.writeText(info());m.textContent='Copied. Read it out or send it as a message.'}
+catch(e){m.textContent='Copy is blocked here. Select the text above and copy it.'}};
+})();
+</script>
+<script>
+(function(){
+const B={w:76.20,e:76.68,s:9.88,n:10.24},W=720,H=540,svg=$('lm');
+const X=lo=>(lo-B.w)/(B.e-B.w)*W,Y=la=>(B.n-la)/(B.n-B.s)*H;
+const pts=a=>a.map(([la,lo])=>X(lo).toFixed(1)+','+Y(la).toFixed(1)).join(' ');
+const land=[[10.24,76.235],[10.24,76.68],[9.88,76.68],[9.88,76.27],[9.93,76.23],[9.99,76.215],[10.08,76.225],[10.16,76.24]];
+const river=[[10.114,76.478],[10.108,76.352],[10.07,76.30],[10.02,76.25],[10.0,76.228]];
+const roads=[
+{n:'NH 544, Angamaly to Aluva',s:'open',p:[[10.196,76.386],[10.108,76.352]],t:'Traffic moving normally.'},
+{n:'NH 544, Aluva to Kalamassery',s:'caution',p:[[10.108,76.352],[10.053,76.322]],t:'Water over the road near the Aluva bypass. One lane open, light vehicles only.'},
+{n:'NH 544, Kalamassery to Kochi',s:'open',p:[[10.053,76.322],[9.98,76.30],[9.931,76.267]],t:'Open. Use this route to reach the city.'},
+{n:'MC Road, Aluva to Perumbavoor',s:'blocked',p:[[10.108,76.352],[10.112,76.42],[10.114,76.478]],t:'Flooded and closed to all vehicles. Boats only.'},
+{n:'Perumbavoor to Kothamangalam',s:'blocked',p:[[10.114,76.478],[10.09,76.56],[10.06,76.636]],t:'Landslide debris on the road. Clearing team on the way.'},
+{n:'Perumbavoor to Muvattupuzha',s:'caution',p:[[10.114,76.478],[10.05,76.53],[9.989,76.579]],t:'Slippery road with fallen branches. Drive slowly.'},
+{n:'Kalamassery to Tripunithura',s:'open',p:[[10.053,76.322],[9.99,76.34],[9.943,76.347]],t:'Open.'}];
+const danger=[
+{n:'Aluva floodplain',p:[[10.135,76.325],[10.135,76.395],[10.085,76.40],[10.075,76.33]],t:'Water level rising. Leave low-lying houses now. 4 people reported trapped near the river bank.'},
+{n:'Perumbavoor riverbank',p:[[10.14,76.44],[10.14,76.515],[10.09,76.51],[10.09,76.445]],t:'Flood water in homes. Evacuation under way.'},
+{n:'Kothamangalam landslide area',p:[[10.09,76.60],[10.09,76.67],[10.03,76.67],[10.03,76.60]],t:'Active landslide risk on slopes. Stay away from hillsides.'}];
+const safe=[
+{n:'Kalamassery and Kochi high ground',p:[[10.04,76.29],[10.04,76.34],[9.90,76.34],[9.90,76.28],[9.95,76.26]],t:'No flooding reported. Roads open.'},
+{n:'Angamaly',p:[[10.23,76.36],[10.23,76.43],[10.17,76.43],[10.17,76.36]],t:'No flooding reported.'},
+{n:'Muvattupuzha town',p:[[10.02,76.54],[10.02,76.61],[9.96,76.61],[9.96,76.54]],t:'Dry and accessible.'}];
+const shel=[
+{n:'Government School, Aluva',la:10.100,lo:76.360,c:500,o:320,sv:'Food, water, medical'},
+{n:'Community Hall, Perumbavoor',la:10.120,lo:76.470,c:500,o:460,sv:'Food, water'},
+{n:'Relief Centre, Kalamassery',la:10.050,lo:76.320,c:700,o:180,sv:'Food, water, medical'},
+{n:'Parish Hall, Angamaly',la:10.190,lo:76.390,c:300,o:150,sv:'Food, water'},
+{n:'Town Hall, Tripunithura',la:9.945,lo:76.350,c:400,o:90,sv:'Food, water, medical'},
+{n:'Government HS, Muvattupuzha',la:9.990,lo:76.575,c:350,o:200,sv:'Food, water'}];
+const COL={open:'var(--green)',caution:'var(--amber)',blocked:'var(--red)'},LAB={open:'Open',caution:'Use caution',blocked:'Blocked'};
+const sc=x=>x.o/x.c<.75?'#1f8a4c':x.o/x.c<.9?'#e39a14':'#d63a2f';
+let h=`<rect width="${W}" height="${H}" fill="var(--sea)"/><polygon points="${pts(land)}" fill="var(--land)"/>`;
+h+=`<g id="L-safe">`+safe.map((z,i)=>`<g data-k="s" data-i="${i}" tabindex="0" role="button" aria-label="Safe zone: ${z.n}"><polygon points="${pts(z.p)}" fill="var(--green)" fill-opacity=".2" stroke="var(--green)" stroke-width="2" stroke-dasharray="6 4"/></g>`).join('')+`</g>`;
+h+=`<g id="L-danger">`+danger.map((z,i)=>`<g data-k="d" data-i="${i}" tabindex="0" role="button" aria-label="Danger zone: ${z.n}"><polygon class="dz" points="${pts(z.p)}" fill="var(--red)" fill-opacity=".3" stroke="var(--red)" stroke-width="2" stroke-dasharray="6 4"/></g>`).join('')+`</g>`;
+h+=`<polyline points="${pts(river)}" fill="none" stroke="var(--river)" stroke-width="9" stroke-linecap="round" stroke-linejoin="round" pointer-events="none"/>`;
+h+=`<g id="L-roads">`+roads.map((r,i)=>`<g data-k="r" data-i="${i}" tabindex="0" role="button" aria-label="Road: ${r.n}, ${LAB[r.s]}"><polyline points="${pts(r.p)}" fill="none" stroke="transparent" stroke-width="20" stroke-linecap="round"/><polyline points="${pts(r.p)}" fill="none" stroke="${COL[r.s]}" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"${r.s==='blocked'?' stroke-dasharray="10 6"':''}/></g>`).join('')+`</g>`;
+h+=`<g id="L-shel">`+shel.map((x,i)=>`<g data-k="h" data-i="${i}" tabindex="0" role="button" aria-label="Shelter: ${x.n}"><rect id="sh${i}" x="${X(x.lo)-9}" y="${Y(x.la)-9}" width="18" height="18" rx="4" fill="${sc(x)}" stroke="#fff" stroke-width="2.5"/><text x="${X(x.lo)}" y="${Y(x.la)+4}" text-anchor="middle" style="fill:#fff;stroke:none;font-size:11px">H</text></g>`).join('')+`</g>`;
+[['Aluva',10.108,76.352],['Perumbavoor',10.114,76.478],['Kalamassery',10.053,76.322],['Kothamangalam',10.060,76.636],['Kochi',9.931,76.267],['Angamaly',10.196,76.386]].forEach(([n,la,lo])=>{h+=`<text x="${X(lo)+12}" y="${Y(la)-12}">${n}</text>`});
+h+=`<text x="40" y="${H/2}" style="font-style:italic;fill:var(--water)">Arabian Sea</text>`;
+h+=`<g id="you" pointer-events="none"><circle r="14" fill="#2563eb" fill-opacity=".25"/><circle r="7" fill="#2563eb" stroke="#fff" stroke-width="2.5"/></g>`;
+svg.innerHTML=h;
+let sel=null;const det=$('det');
+const rad=d=>d*Math.PI/180;
+const km=(a,b,c,d)=>{const t=Math.sin(rad(c-a)/2)**2+Math.cos(rad(a))*Math.cos(rad(c))*Math.sin(rad(d-b)/2)**2;return 12742*Math.asin(Math.sqrt(t))};
+function badge(t,c){return `<span style="display:inline-block;padding:2px 9px;border-radius:99px;background:${c};color:#fff;font-weight:700;font-size:12px">${t}</span>`}
+function show(k,i){sel=[k,i];let o;
+if(k==='r'){const r=roads[i];o=`<h4>${r.n}</h4>${badge(LAB[r.s],{open:'#1f8a4c',caution:'#b97a0a',blocked:'#d63a2f'}[r.s])}<p>${r.t}</p>`}
+else if(k==='d'){const z=danger[i];o=`<h4>${z.n}</h4>${badge('Danger zone','#d63a2f')}<p>${z.t}</p>`}
+else if(k==='s'){const z=safe[i];o=`<h4>${z.n}</h4>${badge('Safe zone','#1f8a4c')}<p>${z.t}</p>`}
+else{const x=shel[i],p=Math.round(x.o/x.c*100),pos=window.crPos;
+o=`<h4>${x.n}</h4>${badge(p>=90?'Nearly full':p>=75?'Filling up':'Space available',sc(x))}<p>${x.o} of ${x.c} places taken (${p}%). ${x.sv}.</p><div class="bar" style="margin-top:8px"><i class="${p>=90?'hot':''}" style="width:${p}%"></i></div>${pos?`<p>${km(pos[0],pos[1],x.la,x.lo).toFixed(1)} km from your pinned location.</p>`:''}`}
+det.innerHTML=o}
+svg.addEventListener('click',e=>{const g=e.target.closest('[data-k]');if(g)show(g.dataset.k,+g.dataset.i)});
+svg.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){const g=e.target.closest('[data-k]');if(g){e.preventDefault();show(g.dataset.k,+g.dataset.i)}}});
+document.querySelectorAll('[data-l]').forEach(c=>c.addEventListener('change',()=>{$('L-'+c.dataset.l).style.display=c.checked?'':'none'}));
+const aff=$('aff');roads.forEach((r,i)=>{if(r.s==='open')return;const li=document.createElement('li'),b=document.createElement('button');b.type='button';b.textContent=LAB[r.s]+': '+r.n;b.onclick=()=>show('r',i);li.appendChild(b);aff.appendChild(li)});
+function you(){const p=window.crPos;if(!p)return;$('you').setAttribute('transform',`translate(${X(p[1])} ${Y(p[0])})`);if(sel&&sel[0]==='h')show('h',sel[1])}
+window.addEventListener('pinmove',you);you();
+function clock(){$('lt').textContent=new Date().toLocaleTimeString([], {hour:'2-digit',minute:'2-digit',second:'2-digit'})}
+clock();
+setInterval(()=>{const i=Math.floor(Math.random()*shel.length),x=shel[i];
+x.o=Math.max(0,Math.min(x.c,x.o+Math.round(Math.random()*16-5)));
+$('sh'+i).setAttribute('fill',sc(x));if(sel&&sel[0]==='h'&&sel[1]===i)show('h',i);clock()},6000);
+})();
+</script>
+</body>
+</html>
